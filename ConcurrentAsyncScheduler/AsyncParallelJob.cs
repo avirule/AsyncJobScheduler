@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 #endregion
 
-namespace AsyncJobScheduler
+namespace ConcurrentAsyncScheduler
 {
     /// <summary>
     ///     A modified <see cref="AsyncJob" /> type for efficiently handling the enumeration

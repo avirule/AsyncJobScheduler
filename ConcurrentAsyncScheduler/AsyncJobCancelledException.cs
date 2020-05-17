@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace AsyncJobScheduler
+namespace ConcurrentAsyncScheduler
 {
     /// <summary>
     ///     <see cref="Exception" /> thrown when an <see cref="AsyncJob" /> is cancelled, and that

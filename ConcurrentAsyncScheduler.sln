@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncJobScheduler", "AsyncJobScheduler\AsyncJobScheduler.csproj", "{0B0CEEC1-B83C-4399-A2BA-0D52CAC9A3F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcurrentAsyncScheduler", "ConcurrentAsyncScheduler\ConcurrentAsyncScheduler.csproj", "{0B0CEEC1-B83C-4399-A2BA-0D52CAC9A3F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

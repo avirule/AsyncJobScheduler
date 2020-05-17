@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 #endregion
 
-namespace AsyncJobScheduler
+namespace ConcurrentAsyncScheduler
 {
     /// <summary>
     ///     This class can be used to instantiate work on the .NET <see cref="ThreadPool" />, utilizing the

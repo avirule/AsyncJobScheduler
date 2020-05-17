@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 #endregion
 
-namespace AsyncJobScheduler
+namespace ConcurrentAsyncScheduler
 {
     /// <summary>
     ///     Used for
@@ -105,7 +105,7 @@ namespace AsyncJobScheduler
         {
             _Stopwatch = new Stopwatch();
 
-            // combine AsyncJobScheduler's cancellation token with the given token, to effectively observe both
+            // combine ConcurrentAsyncScheduler's cancellation token with the given token, to effectively observe both
             _CancellationToken = CancellationTokenSource.CreateLinkedTokenSource(AsyncJobScheduler.AbortToken, cancellationToken).Token;
 
             // create new, unique job identity

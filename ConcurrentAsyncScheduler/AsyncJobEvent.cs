@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace AsyncJobScheduler
+namespace ConcurrentAsyncScheduler
 {
     /// <summary>
     ///     General purpose <see cref="EventHandler" /> for <see cref="AsyncJob" /> related events.
