@@ -70,7 +70,7 @@ namespace ConcurrentAsyncScheduler
         ///     If the work is not completed successfully, this event will not fire. However, regardless
         ///     of cancellation state, its subscriptors will be dereferenced.
         /// </remarks>
-        public event AsyncJobEventHandler? WorkFinished;
+        public event AsyncJobEventHandler WorkFinished;
 
         /// <summary>
         ///     Instantiates a new instance of the <see cref="AsyncJob" /> class.
@@ -160,7 +160,7 @@ namespace ConcurrentAsyncScheduler
             finally
             {
                 // dereference any subscriptors to avoid memory leaks
-                WorkFinished = null!;
+                WorkFinished = null;
             }
         }
 

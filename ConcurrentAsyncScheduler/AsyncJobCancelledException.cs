@@ -22,7 +22,7 @@ namespace ConcurrentAsyncScheduler
         /// </summary>
         /// <param name="message">Message for the <see cref="Exception" />.</param>
         /// <param name="asyncJob">Subject <see cref="AsyncJob" /> of the <see cref="Exception" />.</param>
-        public AsyncJobCancelledException(string? message, AsyncJob asyncJob)
+        public AsyncJobCancelledException(string message, AsyncJob asyncJob)
             : base(message) => AsyncJob = asyncJob;
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace ConcurrentAsyncScheduler
         /// <param name="message">Message for the <see cref="Exception" />.</param>
         /// <param name="innerException">Internal <see cref="Exception" /> this follows.</param>
         /// <param name="asyncJob">Subject <see cref="AsyncJob" /> of the <see cref="Exception" />.</param>
-        public AsyncJobCancelledException(string? message, Exception? innerException, AsyncJob asyncJob)
+        public AsyncJobCancelledException(string message, Exception innerException, AsyncJob asyncJob)
             : base(message, innerException) => AsyncJob = asyncJob;
     }
 }
