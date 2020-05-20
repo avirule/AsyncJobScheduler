@@ -14,9 +14,6 @@ using System.Threading.Tasks;
 
 namespace ConcurrentAsyncScheduler
 {
-    /// <summary>
-    ///     Used for
-    /// </summary>
     public abstract class AsyncJob
     {
         public enum State : long
@@ -37,7 +34,7 @@ namespace ConcurrentAsyncScheduler
         /// <summary>
         ///     Token that can be passed into constructor to allow jobs to observe cancellation.
         /// </summary>
-        protected CancellationToken _CancellationToken { get; }
+        protected CancellationToken _CancellationToken { get; private set; }
 
         /// <summary>
         ///     Unique identity of the <see cref="AsyncJob" />.
@@ -62,15 +59,6 @@ namespace ConcurrentAsyncScheduler
         ///     Elapsed execution time of job.
         /// </summary>
         public TimeSpan ExecutionTime { get; private set; }
-
-        /// <summary>
-        ///     Event fired when the <see cref="AsyncJob" /> finishes its execution successfully.
-        /// </summary>
-        /// <remarks>
-        ///     If the work is not completed successfully, this event will not fire. However, regardless
-        ///     of cancellation state, its subscriptors will be dereferenced.
-        /// </remarks>
-        public event AsyncJobEventHandler WorkFinished;
 
         /// <summary>
         ///     Instantiates a new instance of the <see cref="AsyncJob" /> class.
@@ -113,6 +101,15 @@ namespace ConcurrentAsyncScheduler
 
             ExecutionState = State.Idle;
         }
+
+        /// <summary>
+        ///     Event fired when the <see cref="AsyncJob" /> finishes its execution successfully.
+        /// </summary>
+        /// <remarks>
+        ///     If the work is not completed successfully, this event will not fire. However, regardless
+        ///     of cancellation state, its subscriptors will be dereferenced.
+        /// </remarks>
+        public event AsyncJobEventHandler WorkFinished;
 
         /// <summary>
         ///     Begins executing the <see cref="AsyncJob" />.
@@ -184,6 +181,15 @@ namespace ConcurrentAsyncScheduler
         ///     This method should should only ever expect be called once.
         /// </remarks>
         protected virtual void Cancelled() { }
+
+        /// <summary>
+        ///     Links given <see cref="CancellationToken" /> with the current token.
+        /// </summary>
+        /// <param name="cancellationToken"><see cref="CancellationToken" /> to link.</param>
+        protected void LinkCancellationToken(CancellationToken cancellationToken)
+        {
+            _CancellationToken = CancellationTokenSource.CreateLinkedTokenSource(_CancellationToken, cancellationToken).Token;
+        }
 
         /// <summary>
         ///     Used to halt <see cref="AsyncJob" /> execution and set <see cref="ExecutionState" />
