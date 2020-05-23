@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+
 #endregion
 
 namespace ConcurrentAsyncScheduler
@@ -36,6 +39,35 @@ namespace ConcurrentAsyncScheduler
     /// </remarks>
     public static class AsyncJobScheduler
     {
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes the static instance of the <see cref="AsyncJobScheduler" /> class.
+        /// </summary>
+        static AsyncJobScheduler()
+        {
+            // set maximum concurrent jobs to logical core count - 2
+            // remark: two is subtracted from total logical core count to avoid hogging
+            //     resources from the core the main thread is on, with an extra logical core as a buffer.
+            //
+            //     Largely, the goal here is to ensure this class remains lightweight and doesn't
+            //     interfere with other critical processes.
+            MaximumConcurrentJobs = Environment.ProcessorCount - 2;
+
+            _AbortTokenSource = new CancellationTokenSource();
+            _ConcurrentWorkSemaphore = new SemaphoreSlim(MaximumConcurrentJobs, MaximumConcurrentJobs);
+
+            JobQueued += (sender, args) => { Interlocked.Increment(ref _QueuedJobs); };
+            JobStarted += (sender, args) =>
+            {
+                Interlocked.Decrement(ref _QueuedJobs);
+                Interlocked.Increment(ref _ProcessingJobs);
+            };
+            JobFinished += (sender, args) => { Interlocked.Decrement(ref _ProcessingJobs); };
+        }
+
+        #endregion
+
         #region Members
 
         /// <summary>
@@ -71,36 +103,6 @@ namespace ConcurrentAsyncScheduler
         ///     Number of jobs current being executed.
         /// </summary>
         public static long ProcessingJobsCount => Interlocked.Read(ref _ProcessingJobs);
-
-        #endregion
-
-
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes the static instance of the <see cref="AsyncJobScheduler" /> class.
-        /// </summary>
-        static AsyncJobScheduler()
-        {
-            // set maximum concurrent jobs to logical core count - 2
-            // remark: two is subtracted from total logical core count to avoid hogging
-            //     resources from the core the main thread is on, with an extra logical core as a buffer.
-            //
-            //     Largely, the goal here is to ensure this class remains lightweight and doesn't
-            //     interfere with other critical processes.
-            MaximumConcurrentJobs = Environment.ProcessorCount - 2;
-
-            _AbortTokenSource = new CancellationTokenSource();
-            _ConcurrentWorkSemaphore = new SemaphoreSlim(MaximumConcurrentJobs, MaximumConcurrentJobs);
-
-            JobQueued += (sender, args) => { Interlocked.Increment(ref _QueuedJobs); };
-            JobStarted += (sender, args) =>
-            {
-                Interlocked.Decrement(ref _QueuedJobs);
-                Interlocked.Increment(ref _ProcessingJobs);
-            };
-            JobFinished += (sender, args) => { Interlocked.Decrement(ref _ProcessingJobs); };
-        }
 
         #endregion
 
@@ -203,15 +205,15 @@ namespace ConcurrentAsyncScheduler
         {
             Debug.Assert(asyncJob != null);
 
-            // observe cancellation token
-            if (_AbortTokenSource.IsCancellationRequested)
-            {
-                asyncJob.Cancel();
-                return;
-            }
-
             try
             {
+                // observe cancellation token
+                if (_AbortTokenSource.IsCancellationRequested)
+                {
+                    asyncJob.Cancel();
+                    return;
+                }
+
                 // wait for semaphore resource context-agnostic
                 await _ConcurrentWorkSemaphore.WaitAsync().ConfigureAwait(false);
 

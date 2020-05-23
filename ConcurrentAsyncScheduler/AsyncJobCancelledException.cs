@@ -2,6 +2,9 @@
 
 using System;
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
+
 #endregion
 
 namespace ConcurrentAsyncScheduler

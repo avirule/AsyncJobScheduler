@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
+
 #endregion
 
 namespace ConcurrentAsyncScheduler
@@ -22,7 +25,8 @@ namespace ConcurrentAsyncScheduler
     ///     <para>
     ///         Additionally, there is flexibility with when the indexed data is enumerated in the <see cref="Process" />
     ///         function. For instance, the <see cref="Process" /> function can be overriden to first prepare the data set, and
-    ///         then call <see cref="BatchTasksAndAwaitAll" /> explicitly to then process the data set. This flexibility means
+    ///         then call <see cref="BatchTasksAndAwaitAll" /> explicitly to then process the batched data set. This
+    ///         flexibility means
     ///         that instead of replacing the functionality of the basic <see cref="AsyncJob" />, it is instead extended to
     ///         efficiently cover the processing indexed data.
     ///     </para>
@@ -82,7 +86,7 @@ namespace ConcurrentAsyncScheduler
         ///     Used to process each individual index.
         /// </summary>
         /// <param name="index">Index the current batch's iteration is at.</param>
-        protected virtual void ProcessIndex(int index) { }
+        protected abstract void ProcessIndex(int index);
 
         /// <summary>
         ///     Batches a set of tasks representing the enumeration of indexes equal to the provided <see cref="Length" />.

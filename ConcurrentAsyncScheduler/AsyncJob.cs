@@ -5,12 +5,13 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
+#endregion
+
+// ReSharper disable VirtualMemberNeverOverridden.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global
-
-#endregion
 
 namespace ConcurrentAsyncScheduler
 {
@@ -109,7 +110,7 @@ namespace ConcurrentAsyncScheduler
         ///     If the work is not completed successfully, this event will not fire. However, regardless
         ///     of cancellation state, its subscriptors will be dereferenced.
         /// </remarks>
-        public event AsyncJobEventHandler WorkFinished;
+        public event AsyncJobEventHandler? WorkFinished;
 
         /// <summary>
         ///     Begins executing the <see cref="AsyncJob" />.
@@ -167,7 +168,7 @@ namespace ConcurrentAsyncScheduler
         /// <remarks>
         ///     This method is run using with 'ConfigureAwait' set to <c>false</c>.
         /// </remarks>
-        protected virtual Task Process() => Task.CompletedTask;
+        protected abstract Task Process();
 
         /// <summary>
         ///     Last method executed, run after <see cref="Process" /> finishes.
