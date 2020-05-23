@@ -3,8 +3,8 @@
 
 ## When should I use it?
  This framework is best used when you want to queue work that should allow continuous processes to go uninterrupted.
- For example, in game, if you were to scheduled several hundred tasks with `Task.Run()` directly, CPU core that the main
- and rendering threads are running on would be summarily hogged by the ThreadPool threads handling all of this work.
+ For example, in a game, if you were to scheduled several hundred tasks with `Task.Run()` directly, the CPU core that
+ the main and rendering threads are running on would be summarily hogged by the ThreadPool threads handling all of this work.
 
  The `AsyncJobScheduler` however, utilizes a semaphore to ensure that the CPU always has free cores to continue operating
  on the aforementioned continuous workloads. Additionally, if you've got an operation that will be run many times with
