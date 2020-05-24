@@ -52,7 +52,7 @@ namespace ConcurrentAsyncScheduler
             //
             //     Largely, the goal here is to ensure this class remains lightweight and doesn't
             //     interfere with other critical processes.
-            MaximumConcurrentJobs = Environment.ProcessorCount - 2;
+            MaximumConcurrentJobs = (int)Math.Max(1, Environment.ProcessorCount - 2);
 
             _AbortTokenSource = new CancellationTokenSource();
             _ConcurrentWorkSemaphore = new SemaphoreSlim(MaximumConcurrentJobs, MaximumConcurrentJobs);
