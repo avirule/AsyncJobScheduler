@@ -108,7 +108,7 @@ namespace ConcurrentAsyncScheduler
             {
                 Task ProcessIndexes(int startIndex, int endIndex)
                 {
-                    for (int index = startIndex; index <= endIndex; index++)
+                    for (int index = startIndex; index < endIndex; index++)
                     {
                         ProcessIndex(index);
                     }
@@ -117,19 +117,9 @@ namespace ConcurrentAsyncScheduler
                 }
 
                 int currentStartIndex = 0, batchIndex = 0;
-
                 for (; batchIndex < TotalBatches; batchIndex++, currentStartIndex = batchIndex * BatchLength)
                 {
-                    int currentEndIndex = currentStartIndex + (BatchLength - 1);
-
-                    if (currentEndIndex >= Length)
-                    {
-                        yield return ProcessIndexes(currentStartIndex, Length - 1);
-                    }
-                    else
-                    {
-                        yield return ProcessIndexes(currentStartIndex, currentEndIndex);
-                    }
+                    yield return ProcessIndexes(currentStartIndex, Math.Min(Length, currentStartIndex + BatchLength));
                 }
             }
 

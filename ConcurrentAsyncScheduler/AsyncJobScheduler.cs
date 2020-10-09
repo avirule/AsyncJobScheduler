@@ -131,7 +131,13 @@ namespace ConcurrentAsyncScheduler
 
             OnJobQueued(asyncJob);
 
-            Task.Run(() => ExecuteJob(asyncJob));
+            Task executeJob = ExecuteJob(asyncJob);
+            Task.Run(() => executeJob);
+
+            if (executeJob.IsFaulted && executeJob.Exception is { })
+            {
+                throw executeJob.Exception;
+            }
         }
 
         /// <summary>
@@ -146,10 +152,6 @@ namespace ConcurrentAsyncScheduler
             if (AbortToken.IsCancellationRequested)
             {
                 return;
-            }
-            else if (asyncInvocation == null)
-            {
-                throw new NullReferenceException(nameof(asyncInvocation));
             }
 
             Task.Run(() => ExecuteInvocation(asyncInvocation));
