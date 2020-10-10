@@ -22,17 +22,16 @@ namespace ConcurrentAsyncScheduler
     ///         cores unstressed, so any other critical processes aren't interfered with.
     ///     </para>
     ///     <para>
-    ///         Generally, the maximum number of concurrent jobs that can run is limited to
-    ///         <see cref="Environment.ProcessorCount" /> — 2,
+    ///         Generally, the maximum number of concurrent jobs that can run is limited to <see cref="Environment.ProcessorCount" /> — 2,
     ///         and in my testing, being able to increase the amount of concurrent work only leads to resource shortages
-    ///         for other cores (in the case of a game, it will lead to significant frame rate drop as the main core is
-    ///         consumed for other threads).
+    ///         for other cores (for instance, in a game it will lead to significant frame rate drop as the core running the rendering
+    ///         thread is consumed).
     ///     </para>
     ///     <para>
     ///         With that in mind, and in the interest of not destroying CPUs, it is advised to ensure that any
     ///         work you queue into the <see cref="AsyncJobScheduler" /> is parallelized if possible, ideally using
     ///         <see cref="AsyncParallelJob" />. This ensures the default .NET <see cref="TaskScheduler" /> can efficiently
-    ///         delegate work between <see cref="ThreadPool" /> workers. In a more general sense, the sames
+    ///         delegate work between <see cref="ThreadPool" /> workers. In a more general sense, the same
     ///         guidelines apply to scheduling work on this scheduler as directly with
     ///         the .NET default <see cref="TaskScheduler" />.
     ///     </para>

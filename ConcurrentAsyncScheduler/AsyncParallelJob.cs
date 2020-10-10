@@ -26,9 +26,8 @@ namespace ConcurrentAsyncScheduler
     ///         Additionally, there is flexibility with when the indexed data is enumerated in the <see cref="Process" />
     ///         function. For instance, the <see cref="Process" /> function can be overriden to first prepare the data set, and
     ///         then call <see cref="BatchTasksAndAwaitAll" /> explicitly to then process the batched data set. This
-    ///         flexibility means
-    ///         that instead of replacing the functionality of the basic <see cref="AsyncJob" />, it is instead extended to
-    ///         efficiently cover the processing indexed data.
+    ///         flexibility means that instead of replacing the functionality of the basic <see cref="AsyncJob" />, it is
+    ///         instead extended to efficiently cover the processing indexed data.
     ///     </para>
     /// </remarks>
     public abstract class AsyncParallelJob : AsyncJob
